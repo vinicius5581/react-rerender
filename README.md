@@ -1,44 +1,29 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React rerender 
 
-## Available Scripts
+## [The problem](https://github.com/vinicius5581/react-rerender/commit/844a03f68d867106a1f2ca1ce4cc20c20ede24f5)
 
-In the project directory, you can run:
+Because I'm using `React.Component`,  when I've placed a setInterval in the react lifecycle method ComponentDidMount, calling `this.setState` every 2.5 seconds, independently of changing the value of `state.score`, both components, App and Score, will be re-rendered every 2.5 seconds. 
 
-### `npm start`
+![image](https://user-images.githubusercontent.com/1258955/49054372-db3fee80-f1a8-11e8-8157-1e4ecefc922c.png)
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## [Avoiding unwanted re-rendering using shouldComponentUpdate lifecycle method](https://github.com/vinicius5581/react-rerender/commit/6b37b220f96edd7b3fcbf6f37b9b5a43179ea02e)
 
-### `npm test`
+One way to fix the problem presented on https://github.com/vinicius5581/react-rerender/commit/844a03f68d867106a1f2ca1ce4cc20c20ede24f5, is using the lifecycle method `shouldComponentUpdate` that returns a boolean and only when its true, the component will rerender.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The method `shouldComponentUpdate` takes the `nextProps` and `nextState` as props, allowing me to compare them with the current state and props. I can easly define a boolean expression comparing `this.state.score` and `nextState.score` and return true when they are different. 
 
-### `npm run build`
+![image](https://user-images.githubusercontent.com/1258955/49054499-47225700-f1a9-11e8-9e68-da5e16ff04bc.png)
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## [Avoiding unwanted re-rendering using PureComponent](https://github.com/vinicius5581/react-rerender/commit/16c2c60a464570076098ac946bec01028910b83d)
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Another way to avoid unnecessary re-rendering when the value of state don't change is using `React.PureComponent` instead of `React.Component`. `PureComponents` do a shallow comparison of the current state with the next state and if they are the same the component won't re-render. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![image](https://user-images.githubusercontent.com/1258955/49055017-03305180-f1ab-11e8-8e6a-de5a464d2320.png)
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## [PureComponent with nested state](https://github.com/vinicius5581/react-rerender/commit/0bfcd36a8204a0e7251e5f74e40926f5ac8ce9b1)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+'PureComponent' will rerender if a referenced value (objects, array) gets updated even if the values don't change.  
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+![image](https://user-images.githubusercontent.com/1258955/49055547-ccf3d180-f1ac-11e8-9431-7970bd8a24dd.png)
