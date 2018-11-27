@@ -17,6 +17,10 @@ class App extends Component {
     }, 2500);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.score !== nextState.score
+  }
+
   render() {
     console.log('Render App');
     return (
