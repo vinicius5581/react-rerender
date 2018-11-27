@@ -8,12 +8,22 @@ const Score = ({score}) => {
 
 class App extends PureComponent {
   state = {
-    score: 0
+    score: 0,
+    yards : {
+      team_1: 1,
+      team_2: 1,
+    }
   }
 
   componentDidMount() {
     setInterval(() => {
-      this.setState({score: 0});
+      this.setState({
+        score: 0,
+        yards : {
+          team_1: 1,
+          team_2: 1,
+        }
+      });
     }, 2500);
   }
 
