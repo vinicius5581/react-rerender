@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import './App.css';
 
 const Score = ({score}) => {
@@ -6,7 +6,7 @@ const Score = ({score}) => {
   return <p>{score}</p>
 }
 
-class App extends Component {
+class App extends PureComponent {
   state = {
     score: 0
   }
@@ -15,10 +15,6 @@ class App extends Component {
     setInterval(() => {
       this.setState({score: 0});
     }, 2500);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return this.state.score !== nextState.score
   }
 
   render() {
